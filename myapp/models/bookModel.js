@@ -6,7 +6,6 @@ const bookSchema = new mongoose.Schema({
         type : String,
         required : [true, 'A book must have a title.'],
         unique : true,
-        trim : true
     },
     author :{
         type : String,
@@ -15,8 +14,8 @@ const bookSchema = new mongoose.Schema({
     },
     imageUrl : {
         type :String,
-        required : [true],
-        unique : true,
+        //required : true,
+        //unique : true,
     },
     pages : {
         type :Number,

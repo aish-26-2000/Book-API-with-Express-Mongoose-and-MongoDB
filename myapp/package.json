@@ -11,17 +11,19 @@
     "dotenv": "^16.0.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "mongoose": "^6.5.2",
+    "mongoose": "^5.13.14",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.19",
     "pug": "2.0.0-beta11"
   },
   "description": "Book resource API",
   "main": "app.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aish-26-2000/Book-API.git"
+  },
+  "engines": {
+    "node" : ">=10.0.0"
   },
   "author": "Aish",
   "license": "ISC",

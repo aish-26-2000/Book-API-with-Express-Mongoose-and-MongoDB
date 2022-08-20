@@ -30,14 +30,35 @@ exports.getBook = async (req,res) => {
                 books
             }
         });
-        console.log("Book found...")
+        console.log("Yaaay! Book found.")
     } catch (err) {
         res.status(404).json({
             status :'fail',
             message : err
         })
-        console.log("Book not found...")
+        console.log("Oops! Book not found.")
         }
 };
+
+exports.createBook = async (req,res) => {
     
+    try{
+        const newBook = await Book.create(req.body);
+
+        res.status(201).json({
+            status : 'success',
+            data : {
+                book :newBook
+            }
+        });
+        console.log("Book added Successfully.")
+
+    } catch (err) {
+        res.status(400).json({
+            status:'fail',
+            message : 'Invalid data sent!'
+        });
+        console.log("Something Wrong!")
+    }
+};
 
