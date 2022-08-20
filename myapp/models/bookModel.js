@@ -13,19 +13,18 @@ const bookSchema = new mongoose.Schema({
         required : [true, 'A book must have an author.'],
         unique : true,
     },
-    rating : {
+    imageUrl : {
+        type :String,
+        required : [true],
+        unique : true,
+    },
+    pages : {
         type :Number,
-        default : 4.5
     },
     price : {
         type :Number,
         required : [true,'A book must have a price.']
-    },
-    description : {
-        type :String,
-        trim : true
     }
-
 });
 
 //Creating Model

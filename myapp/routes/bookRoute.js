@@ -7,4 +7,8 @@ router
   .route('/')
   .get(bookController.getAllBooks);
 
+router
+  .route('/:id')
+  .get(bookController.getBook);
+
   module.exports = router;

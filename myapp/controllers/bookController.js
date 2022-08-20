@@ -20,3 +20,24 @@ exports.getAllBooks = async (req,res) => {
     }
 };
 
+exports.getBook = async (req,res) => {
+    try{
+        const books = await Book.findById(req.params.id)
+        
+        res.status(200).json({
+            status : 'success',
+            data: {
+                books
+            }
+        });
+        console.log("Book found...")
+    } catch (err) {
+        res.status(404).json({
+            status :'fail',
+            message : err
+        })
+        console.log("Book not found...")
+        }
+};
+    
+
