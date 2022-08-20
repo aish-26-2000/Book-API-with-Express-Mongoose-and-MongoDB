@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 
 //Creating Schema
 const bookSchema = new mongoose.Schema({
-    name :{
+    title :{
         type : String,
-        required : [true, 'A book must have a name.'],
+        required : [true, 'A book must have a title.'],
         unique : true,
         trim : true
     },
-    name :{
+    author :{
         type : String,
         required : [true, 'A book must have an author.'],
         unique : true,
