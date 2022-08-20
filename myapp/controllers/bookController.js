@@ -83,3 +83,22 @@ exports.updateBook = async (req,res) => {
         console.log("Something Wrong!")
     }
 };
+exports.deleteBook = async (req,res) => {
+    try {
+        const book = await Book.findByIdAndDelete(req.params.id,req.body);
+
+
+        res.status(204).json({
+            status : 'success',
+            data : null
+    });
+    console.log("Book Deleted Successfully")
+    } catch (err) {
+        res.status(400).json({
+            status:'fail',
+            message : 'Invalid data sent!'
+        }); 
+        console.log("Something Wrong.") 
+
+    }
+};
