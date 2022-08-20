@@ -8,10 +8,25 @@
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "mongoose": "^6.5.2",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11",
-    "nodemon": "^2.0.19"
-  }
+    "nodemon": "^2.0.19",
+    "pug": "2.0.0-beta11"
+  },
+  "description": "Book resource API",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aish-26-2000/Book-API.git"
+  },
+  "author": "Aish",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aish-26-2000/Book-API/issues"
+  },
+  "homepage": "https://github.com/aish-26-2000/Book-API#readme"
 }
