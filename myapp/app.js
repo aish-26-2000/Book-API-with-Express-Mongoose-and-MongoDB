@@ -28,14 +28,23 @@ app.use((req,res,next)=>{
 app.use('/books',bookRouter)
 
 app.get('/',(req,res)=>{
-    res.send(`<style>
+    res.send(`<head> 
+        <title> Book Resource API </title>
+    </head>
+    <style>
     body {
       background-image: url('https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-learning-reading-knowledge-accumulation-background-template-image_193558.jpg');
       background-repeat: no-repeat;
       background-size: cover;
     }
     </style><h1> Hi! Greetings from Book Resource API!</h1>
-    <p><h2> Jump to <i> /books </i> to get all books.</h2></p>`);
+    <ul><h2>
+    <li> Get all books </li>
+    <li> Find a book </li>
+    <li> Add a book </li>
+    <li> Update a book </li>
+    <li> Delete a book </li>
+    </h2></ul>`);
     console.log("Home page loaded...");
 });
 
