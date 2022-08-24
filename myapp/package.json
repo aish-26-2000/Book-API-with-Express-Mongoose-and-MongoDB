@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js"
+    "start:dev": "nodemon server.js",
+    "start:prod": "SET NODE_ENV=production && nodemon server.js"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
@@ -23,7 +25,7 @@
     "url": "git+https://github.com/aish-26-2000/Book-API.git"
   },
   "engines": {
-    "node" : ">=10.0.0"
+    "node": ">=10.0.0"
   },
   "author": "Aish",
   "license": "ISC",

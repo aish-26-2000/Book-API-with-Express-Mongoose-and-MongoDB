@@ -1,11 +1,17 @@
 const Book = require('./../models/bookModel');
-const AppError = require('../utils/appError');
+const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
+const AppError = require('../utils/appError');
+const colors = require('colors');
 
 
 exports.getAllBooks = catchAsync(async (req,res,next) => {
-        const book = await Book.find()
+    const features = new APIFeatures(Book.find(),req.query)
+        .paginate();
+    
+    const book = await features.query;
 
+        //Response
         res.status(200).json({
             status:'success',
             requestedAt : req.requestTime,
@@ -14,13 +20,15 @@ exports.getAllBooks = catchAsync(async (req,res,next) => {
                 book
             }
         });
+        console.log("All books are listed.".yellow)
 });
 
 exports.getBook = catchAsync(async (req,res,next) => {
-        const book = await Book.findById(req.params.id)
+        const book = await Book.findById(req.params.id);
         
         if(!book) {
-            return next(new AppError('No book found with that ID',404))
+            return next(new AppError('No book found with that ID',404));
+            console.log("ID not exists".red);
         }
 
         res.status(200).json({
@@ -29,7 +37,7 @@ exports.getBook = catchAsync(async (req,res,next) => {
                 book
             }
         });
-        console.log("Yaaay! Book found.")
+        console.log("Yaaay! Book found.".yellow)
 });
 
 exports.createBook = catchAsync(async (req,res,next) => {
@@ -41,14 +49,19 @@ exports.createBook = catchAsync(async (req,res,next) => {
                 book :newBook
             }
         });
-        console.log("Book added Successfully.")
+        console.log("Book added Successfully.".yellow)
 });
 
 exports.updateBook = catchAsync(async (req,res,next) => {
-        const book = await Book.findByIdAndUpdate(req.params.id,req.body);
+        const book = await Book.findByIdAndUpdate(req.params.id,req.body,{
+            new:true,
+            runValidators : true
+        });
 
         if(!book) {
-            return next(new AppError('No book found with that ID',404))
+            return next(new AppError('No book found with that ID',404));
+            console.log("ID not exists".red);
+
         }
 
         res.status(200).json({
@@ -57,19 +70,21 @@ exports.updateBook = catchAsync(async (req,res,next) => {
                 book 
             }
         });
-        console.log("Book updated.")
+        console.log("Book updated.".yellow)
 });
 
 exports.deleteBook = catchAsync(async (req,res,next) => {
-        const book = await Book.findByIdAndDelete(req.params.id,req.body);
+        const book = await Book.findByIdAndDelete(req.params.id);
 
         if(!book) {
-            return next(new AppError('No book found with that ID',404))
+            return next(new AppError('No book found with that ID',404));
+            console.log("ID not exists".red);
+
         }
 
         res.status(204).json({
             status : 'success',
             data : null
     });
-    console.log("Book Deleted Successfully")
+    console.log("Book Deleted Successfully".yellow)
 });

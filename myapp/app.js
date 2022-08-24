@@ -1,34 +1,22 @@
 const express = require('express');
 const morgan = require('morgan');
+const colors = require('colors');
 
+const AppError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errorController');
 const bookRouter = require('./routes/bookRoute');
 const userRouter = require('./routes/userRoute');
 
 const app = express();
 
 //1 MIDDLEWARES
-console.log(process.env.NODE_ENV);
-
-if(process.env.NODE_ENV==='development'){
+console.log(`Running on ${process.env.NODE_ENV} mode.`.rainbow);
+if(process.env.NODE_ENV ==='development'){
     app.use(morgan('dev'));
 }
-app.use(express.json());
-
-/*app.use((req,res,next)=>{
-    console.log('Hello from the middleware!!!');
-    next();
-});*/
-
-app.use((req,res,next)=>{
-    req.requestTime = new Date().toISOString();
-    next();
-});
-
-
-app.use('/books',bookRouter)
 
 app.get('/',(req,res)=>{
-    res.send(`<head> 
+    res.send(`<head>
         <title> Book Resource API </title>
     </head>
     <style>
@@ -45,7 +33,25 @@ app.get('/',(req,res)=>{
     <li> Update a book </li>
     <li> Delete a book </li>
     </h2></ul>`);
-    console.log("Home page loaded...");
+    console.log("Home page loaded...".yellow);
 });
+
+
+app.use(express.json());
+
+app.use((req,res,next)=>{
+    req.requestTime = new Date().toISOString();
+    next();
+});
+
+app.use('/books',bookRouter)
+
+app.all('*',(req,res,next)=>{
+    next(new AppError(`Can't find ${req.originalUrl} on this server.`,404));
+    console.log('Oops! Not Found !'.red);
+});
+
+app.use(globalErrorHandler);
+
 
 module.exports= app;
