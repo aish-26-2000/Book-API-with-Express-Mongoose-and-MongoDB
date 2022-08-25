@@ -4,7 +4,6 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('../utils/appError');
 const colors = require('colors');
 
-
 exports.getAllBooks = catchAsync(async (req,res,next) => {
     const features = new APIFeatures(Book.find(),req.query)
         .paginate();
