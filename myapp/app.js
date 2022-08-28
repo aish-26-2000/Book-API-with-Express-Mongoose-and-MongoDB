@@ -4,6 +4,10 @@ const morgan = require('morgan');
 const colors = require('colors');
 const rateLimit = require('express-rate-limit');
 const { default: helmet } = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -34,6 +38,23 @@ app.use('/',limiter);
 
 //parsing incoming requests with json payload
 app.use(express.json({limit:'10 kb'}));
+
+//Data sanitization against NOSQL query injection
+app.use(mongoSanitize());
+
+//Data sanitization against XSS
+app.use(xss());
+
+//prevent parameter pollution
+app.use(
+    hpp({
+      whitelist: [
+        'title',
+        'author',
+        'price'
+      ]
+    })
+  );
 
 //return requested time
 app.use((req,res,next)=>{

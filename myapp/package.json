@@ -13,8 +13,10 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
     "express": "~4.16.1",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.5.2",
     "helmet": "^6.0.0",
+    "hpp": "^0.2.3",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.14",
@@ -22,7 +24,8 @@
     "nodemailer": "^6.7.8",
     "nodemon": "^2.0.19",
     "pug": "2.0.0-beta11",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
   },
   "description": "Book resource API",
   "main": "app.js",
