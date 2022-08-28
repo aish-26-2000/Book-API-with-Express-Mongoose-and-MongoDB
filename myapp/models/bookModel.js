@@ -1,3 +1,4 @@
+//loading modules
 const mongoose = require('mongoose');
 
 //Creating Schema
@@ -28,4 +29,5 @@ const bookSchema = new mongoose.Schema({
 //Creating Model
 const Book = mongoose.model('Book',bookSchema);
 
+//export
 module.exports = Book;

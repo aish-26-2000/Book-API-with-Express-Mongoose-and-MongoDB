@@ -1,9 +1,12 @@
+//loading modules
 const express = require('express');
 const bookController = require('./../controllers/bookController');
 const authController = require('./../controllers/authController');
 
+//creating router
 const router = express.Router();
 
+//routes
 router
   .route('/')
   .get(authController.protect,bookController.getAllBooks)
@@ -17,5 +20,5 @@ router
   .delete(bookController.deleteBook);
 
 
-
-  module.exports = router;
+//export
+module.exports = router;

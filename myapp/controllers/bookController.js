@@ -1,9 +1,11 @@
+//loading modules
 const Book = require('./../models/bookModel');
 const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('../utils/appError');
 const colors = require('colors');
 
+//Get all books
 exports.getAllBooks = catchAsync(async (req,res,next) => {
     const features = new APIFeatures(Book.find(),req.query)
         .paginate();
@@ -22,6 +24,7 @@ exports.getAllBooks = catchAsync(async (req,res,next) => {
         console.log("All books are listed.".yellow)
 });
 
+//Get one book
 exports.getBook = catchAsync(async (req,res,next) => {
         const book = await Book.findById(req.params.id);
         
@@ -39,6 +42,7 @@ exports.getBook = catchAsync(async (req,res,next) => {
         console.log("Yaaay! Book found.".yellow)
 });
 
+//Create a new book
 exports.createBook = catchAsync(async (req,res,next) => {
         const newBook = await Book.create(req.body);
 
@@ -51,6 +55,7 @@ exports.createBook = catchAsync(async (req,res,next) => {
         console.log("Book added Successfully.".yellow)
 });
 
+//Update a book
 exports.updateBook = catchAsync(async (req,res,next) => {
         const book = await Book.findByIdAndUpdate(req.params.id,req.body,{
             new:true,
@@ -72,6 +77,7 @@ exports.updateBook = catchAsync(async (req,res,next) => {
         console.log("Book updated.".yellow)
 });
 
+//Delete a book
 exports.deleteBook = catchAsync(async (req,res,next) => {
         const book = await Book.findByIdAndDelete(req.params.id);
 
