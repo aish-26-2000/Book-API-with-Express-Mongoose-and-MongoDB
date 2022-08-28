@@ -2,6 +2,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const colors = require('colors');
+const rateLimit = require('express-rate-limit');
+const { default: helmet } = require('helmet');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -10,11 +12,47 @@ const userRouter = require('./routes/userRoute');
 
 const app = express();
 
-//Middlewares
 console.log(`Running on ${process.env.NODE_ENV} mode.`.rainbow);
+
+//Middlewares
+//global middlewares
+//set security HTTP headers
+app.use(helmet())
+
+//development logging
 if(process.env.NODE_ENV ==='development'){
     app.use(morgan('dev'));
 }
+
+//limit requests from same API
+const limiter = rateLimit({
+    max:100,
+    windowMs: 60*60*1000,
+    message:'Too many requests from this IP,please try again in an hour'
+});
+app.use('/',limiter);
+
+//parsing incoming requests with json payload
+app.use(express.json({limit:'10 kb'}));
+
+//return requested time
+app.use((req,res,next)=>{
+    req.requestTime = new Date().toISOString();
+    next();
+});
+
+//routes
+app.use('/books',bookRouter)
+app.use('/users',userRouter)
+
+//AppError 404
+app.all('*',(req,res,next)=>{
+    next(new AppError(`Can't find ${req.originalUrl} on this server.`,404));
+    console.log('Oops! Not Found !'.red);
+});
+
+//Global error handling middleware
+app.use(globalErrorHandler);
 
 //Home Page
 app.get('/',(req,res)=>{
@@ -37,28 +75,6 @@ app.get('/',(req,res)=>{
     </h2></ul>`);
     console.log("Home page loaded...".yellow);
 });
-
-//parsing incoming requests with json payload
-app.use(express.json());
-
-//return requested time
-app.use((req,res,next)=>{
-    req.requestTime = new Date().toISOString();
-    next();
-});
-
-//routes
-app.use('/books',bookRouter)
-app.use('/users',userRouter)
-
-//AppError 404
-app.all('*',(req,res,next)=>{
-    next(new AppError(`Can't find ${req.originalUrl} on this server.`,404));
-    console.log('Oops! Not Found !'.red);
-});
-
-//Global error handling middleware
-app.use(globalErrorHandler);
 
 //export
 module.exports= app;
