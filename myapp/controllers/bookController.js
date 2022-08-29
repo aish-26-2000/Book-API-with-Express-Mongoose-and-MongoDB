@@ -44,6 +44,12 @@ exports.getBook = catchAsync(async (req,res,next) => {
 
 //Create a new book
 exports.createBook = catchAsync(async (req,res,next) => {
+        //restricting access
+        if (req.user.role !== 'admin') {
+            return next(
+            new AppError('You do not have permission to perform this action', 403)
+            );
+        }
         const newBook = await Book.create(req.body);
 
         res.status(201).json({
@@ -57,6 +63,12 @@ exports.createBook = catchAsync(async (req,res,next) => {
 
 //Update a book
 exports.updateBook = catchAsync(async (req,res,next) => {
+         //restricting access
+         if (req.user.role !== 'admin') {
+            return next(
+            new AppError('You do not have permission to perform this action', 403)
+            );
+        }
         const book = await Book.findByIdAndUpdate(req.params.id,req.body,{
             new:true,
             runValidators : true
@@ -79,6 +91,12 @@ exports.updateBook = catchAsync(async (req,res,next) => {
 
 //Delete a book
 exports.deleteBook = catchAsync(async (req,res,next) => {
+         //restricting access
+         if (req.user.role !== 'admin') {
+            return next(
+            new AppError('You do not have permission to perform this action', 403)
+            );
+        }
         const book = await Book.findByIdAndDelete(req.params.id);
 
         if(!book) {

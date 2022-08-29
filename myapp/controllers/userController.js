@@ -14,6 +14,12 @@ const filterObj = (obj,...allowedFields) => {
 
 //Get all users
 exports.getAllUsers = catchAsync(async (req, res, next) => {
+    //restricting access
+    if (req.user.role !== 'admin') {
+      return next(
+      new AppError('You do not have permission to perform this action', 403)
+      );
+  }
     const users = await User.find();
   
     // send response

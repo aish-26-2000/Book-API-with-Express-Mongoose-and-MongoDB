@@ -9,15 +9,15 @@ const router = express.Router();
 //routes
 router
   .route('/')
-  .get(authController.protect,bookController.getAllBooks)
-  .post(bookController.createBook);
+  .get(bookController.getAllBooks)
+  .post(authController.protect,bookController.createBook);
 
 
 router
   .route('/:id')
-  .get(bookController.getBook)
-  .patch(bookController.updateBook)
-  .delete(bookController.deleteBook);
+  .get(authController.protect,bookController.getBook) 
+  .patch(authController.protect,bookController.updateBook)
+  .delete(authController.protect,bookController.deleteBook);
 
 
 //export
