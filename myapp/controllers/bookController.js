@@ -10,9 +10,10 @@ exports.getAllBooks = catchAsync(async (req,res,next) => {
     const features = new APIFeatures(Book.find(),req.query)
         .paginate();
     
-    const book = await features.query;
+    //const book = await features.query;
+    const book = await Book.find();
 
-        //Response
+        //Responses
         res.status(200).json({
             status:'success',
             requestedAt : req.requestTime,

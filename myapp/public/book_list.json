@@ -1,0 +1,24 @@
+[
+    {
+        "title": "The Alchemist",
+        "author": "Paulo Coelho",
+        "quantity": 10,
+        "price" : 40
+    },{
+        "title": "Cosmos",
+        "author": "Carl Sagan",
+        "quantity": 12,
+        "price" : 42
+    },
+    {
+        "title": "Harry Potter",
+        "author": "J.K.Rowling",
+        "quantity": 15,
+        "price" : 38
+    },{
+        "title" : "Hamlet",
+        "author" : "Shakespeare",
+        "quantity" : 8,
+        "price" : 40
+    }
+]

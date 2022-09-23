@@ -13,6 +13,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const bookRouter = require('./routes/bookRoute');
 const userRouter = require('./routes/userRoute');
+const purchaseRouter = require('./routes/purchaseRoute');
 
 const app = express();
 
@@ -65,6 +66,8 @@ app.use((req,res,next)=>{
 //routes
 app.use('/books',bookRouter)
 app.use('/users',userRouter)
+app.use('/purchase',purchaseRouter)
+
 
 //AppError 404
 app.all('*',(req,res,next)=>{

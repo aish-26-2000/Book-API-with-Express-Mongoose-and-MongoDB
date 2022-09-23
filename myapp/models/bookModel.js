@@ -21,8 +21,13 @@ const bookSchema = new mongoose.Schema({
     pages : {
         type :Number,
     },
+    quantity : {
+        type : Number,
+        required : true
+    },
     price : {
-        type :Number
+        type :Number,
+        required : true
     }
 });
 
