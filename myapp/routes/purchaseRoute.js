@@ -13,7 +13,7 @@ router
   .get(authController.protect,purchaseController.checkAvailability)
   .post(authController.protect,purchaseController.purchaseBook)
 
-router.get('/',purchaseController.purchaseReport)
+router.get('/',authController.protect,purchaseController.purchaseReport)
    
 
 

@@ -44,7 +44,6 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
         };
         //create purchase
         const purchaseDetails = await service.createItem(purchaseItem)
-        console.log(purchaseDetails);
         const bookQty = book_details.quantity;
         const itemQty = purchaseDetails.quantity;
         if(bookQty-itemQty < 0) {
@@ -68,15 +67,21 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
 
 //get purchase details
 exports.purchaseReport = async(req,res) => {
-  
-  const report = service.getPurchaseReport();
-  console.log(report);
+  //restricting access
+  if (req.user.role !== 'admin') {
+    res.status(403).send({
+      status : "fail",
+      message : "You do not have permission to perform this action"
+    })
+  }
+  //generate purchase report
+  const report = await service.getPurchaseReport()
   res.send({
     status:'success',
     requestedAt : req.requestTime,
-    details : {
-        report
-    }
+    results : report.length,
+    report : report
   })
 }
 
+ 

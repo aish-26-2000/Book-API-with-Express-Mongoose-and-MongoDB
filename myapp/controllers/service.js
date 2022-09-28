@@ -1,7 +1,9 @@
 //loading modules
 const Book = require('./../models/bookModel');
+const User = require('./../models/userModel');
 const Purchase = require('./../models/purchaseModel');
 const mongoose = require('mongoose');
+const APIFeatures = require('./../utils/apiFeatures');
 
 
 const conn = mongoose.connection;
@@ -59,30 +61,35 @@ exports.update = async(_id,by) => {
 }
 
 //purchase report
+
 exports.getPurchaseReport = async() => {
     //begin transaction
     const session = await conn.startSession();
     session.startTransaction();
     try{
-        const report = await Purchase.find()
+        const join = await Purchase.aggregate([{
+            //join books
+            $lookup: {
+                from : 'books', //name of collection
+                localField : "bookId", //local join field
+                foreignField : "_id", //target join field
+                as: "book_details" //name of result
+            }
+        },{
+            //join users
+            $lookup: {
+                from : 'users',
+                localField : "userId",
+                foreignField : "_id",
+                as: "user_details"
+            }
+        }]);
+
         // Commit the changes
         await session.commitTransaction(); 
-        return report;     
+        return join;
     } catch(error) {
         console.log(error);
         await session.abortTransaction();
     }
-}
-
-//aggregate 
-const result = Purchase.aggregate([
-    {$lookup: {
-        from : Book,
-        localField : 'bookId',
-        foreignField : '_id',
-        as:'result'
-    }}
-])
-if(result) {
-    console.log(result);
 }

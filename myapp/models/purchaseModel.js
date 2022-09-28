@@ -13,27 +13,15 @@ const purchaseSchema = new mongoose.Schema({
         type : Number
     },
     userId : {
-        type: String,
+        type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: true
     },
     bookId : {
-        type: String,
+        type: mongoose.Schema.ObjectId,
         ref: 'Book',
         required: true
-    },
-    user : [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref : "User"
-        }
-    ],
-    book :[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref : "Book"
-        }
-    ]
+    }
 });
 
 //Creating Model
