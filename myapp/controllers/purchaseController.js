@@ -6,6 +6,10 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('../utils/appError');
 const service = require('./service');
 const { response } = require('express');
+const mongoose = require('mongoose');
+
+const conn = mongoose.connection;
+
 
 //check book availability
 exports.checkAvailability = catchAsync(async(req,res) => {
@@ -30,7 +34,9 @@ exports.checkAvailability = catchAsync(async(req,res) => {
 })
 
 //purchase book
-exports.purchaseBook = catchAsync(async(req,res)=> {  
+exports.purchaseBook = catchAsync(async(req,res)=> {
+  const session = await conn.startSession();
+  try{
     //get book
     const book_details = await service.fetchBookDetails(req.params.id)
     if(!book_details){res.status(404).send({message:'Check the id again'})}
@@ -43,14 +49,15 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
             totalPrice : req.body.quantity * price
         };
         //create purchase
-        const purchaseDetails = await service.createItem(purchaseItem)
+        session.startTransaction();
+        const purchaseDetails = await service.createItem(purchaseItem,session)
         const bookQty = book_details.quantity;
         const itemQty = purchaseDetails.quantity;
         if(bookQty-itemQty < 0) {
             res.status(404).send({status:'fail',message : 'Required number of books unavailable'})    
           } else {
             //update book quantity
-            await service.update(req.params.id,itemQty)
+            await service.update(req.params.id,itemQty,session)
             res.send({
               message : 'success',
               details : {
@@ -62,7 +69,13 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
               }
               });       
           }  
-    }
+    };
+    await session.commitTransaction();
+  }catch(error) {
+    console.log('error');
+    await session.abortTransaction();
+  }
+  session.endSession();    
 })
 
 //get purchase details

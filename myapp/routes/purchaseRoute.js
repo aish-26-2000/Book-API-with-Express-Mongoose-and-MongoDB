@@ -16,6 +16,5 @@ router
 router.get('/',authController.protect,purchaseController.purchaseReport)
    
 
-
 //export
 module.exports = router;
