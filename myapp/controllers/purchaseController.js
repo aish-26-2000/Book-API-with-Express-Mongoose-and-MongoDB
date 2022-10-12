@@ -36,6 +36,8 @@ exports.checkAvailability = catchAsync(async(req,res) => {
 //purchase book
 exports.purchaseBook = catchAsync(async(req,res)=> {
   const session = await conn.startSession();
+  session.startTransaction();
+
   try{
     //get book
     const book_details = await service.fetchBookDetails(req.params.id)
@@ -49,7 +51,6 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
             totalPrice : req.body.quantity * price
         };
         //create purchase
-        session.startTransaction();
         const purchaseDetails = await service.createItem(purchaseItem,session)
         const bookQty = book_details.quantity;
         const itemQty = purchaseDetails.quantity;
@@ -57,7 +58,7 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
             res.status(404).send({status:'fail',message : 'Required number of books unavailable'})    
           } else {
             //update book quantity
-            await service.update(req.params.id,itemQty,session)
+            await service.updateItem(+req.params.id,itemQty,session) 
             res.send({
               message : 'success',
               details : {
@@ -72,10 +73,10 @@ exports.purchaseBook = catchAsync(async(req,res)=> {
     };
     await session.commitTransaction();
   }catch(error) {
-    console.log('error');
+    console.log(error);
     await session.abortTransaction();
+    session.endSession();    
   }
-  session.endSession();    
 })
 
 //get purchase details

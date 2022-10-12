@@ -17,19 +17,19 @@ exports.fetchBookDetails = async(_id)=> {
 }
 
 //create purchase item
-exports.createItem = async(item,t) => {
-    const create =  Purchase.create(item);
+exports.createItem = async(item,session) => {
+    const create =  Purchase.create(item,{session});
     //console.log(t);
     return create;
 }
 
 //update quantity
-exports.update = async(_id,by,t) => {
-    const update = Book.findByIdAndUpdate(_id, {
+exports.updateItem = async(_id,by,session) => {
+    const update = Book.findByIdAndUpdate(_id,{
         $inc : {'quantity' : -by }
-    })  
+    },{session});  
     //console.log(t);
-    return update;
+    return update; 
 }
 
 //purchase report
