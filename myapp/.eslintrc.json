@@ -1,0 +1,19 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+
+    },
+    "extends":  ["eslint:recommended", "prettier"],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "linebreak-style": ["error", "WINDOWS"],
+        "semi": ["error", "always"],
+        "no-console": "error",
+        "no-unused-vars": "error"
+    }
+}
